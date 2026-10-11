@@ -1,0 +1,29 @@
+# Domain x length analysis (brief section 16) — OPTIONAL / two-dimensional eval.
+#
+# Evaluate a trained checkpoint on each domain corpus, broken down by the same
+# B1..B5 source-length buckets.
+#
+# Only SanHinCorp is bundled with this repo (== the data/v2 test set).
+# Add Himsanskritam (or any other domain) by dropping its parallel files
+# somewhere and listing it below.  Missing corpora are skipped with a note.
+
+experiment: domain_length
+dataset_version: v2
+model_key: nllb
+
+metrics: [bleu, chrf2, comet, absolute_length_error]
+bucket_boundaries: [5, 10, 15, 20]
+
+domains:
+  - name: SanHinCorp
+    data_dir: data/v2                   # the main corpus test set
+    src: test.sa
+    tgt: test.hi
+  - name: Himsanskritam
+    data_dir: data/himsanskritam        # <-- place test.sa / test.hi here if available
+    src: test.sa
+    tgt: test.hi
+
+heatmap:
+  colormap: viridis
+  dpi: 300

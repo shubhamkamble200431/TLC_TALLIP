@@ -1,0 +1,24 @@
+# "tf18" baseline — a vanilla Transformer encoder-decoder (BART architecture)
+# trained FROM SCRATCH (random init, no pretrained checkpoint), 18 encoder +
+# 18 decoder layers.  Same family as tf6/tf12, just deeper.  base_model is a
+# marker string (infer_model_family() matches on "scratch-tf18"), not a real
+# HF repo; the tokenizer is borrowed from tokenizer_base (NLLB) purely for
+# subword segmentation — see src/models/builder.py::_build_scratch_transformer.
+model_family: tf18
+base_model: scratch-tf18
+model_revision: null
+tokenizer_base: facebook/nllb-200-distilled-600M
+
+scratch_layers: 18
+scratch_d_model: 512
+scratch_ffn_dim: 2048
+scratch_attention_heads: 8
+
+src_lang: san_Deva
+tgt_lang: hin_Deva
+
+max_input_length: 512
+max_target_length: 128
+force_bos_target_lang: false   # decoder_start_token_id is set explicitly at construction
+
+label: "Transformer-18L-scratch"

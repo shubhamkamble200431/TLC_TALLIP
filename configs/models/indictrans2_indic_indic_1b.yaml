@@ -1,0 +1,25 @@
+# IndicTrans2 indic-indic 1B baseline.
+#
+# ** GATED MODEL — not runnable until HF access is granted **
+#   ai4bharat/indictrans2-indic-indic-1B requires: (1) accepting the model's
+#   license on huggingface.co while logged in, (2) an HF_TOKEN with access to
+#   it available in this environment (e.g. `huggingface-cli login` or
+#   HUGGING_FACE_HUB_TOKEN env var), and (3) `pip install IndicTransToolkit`
+#   for its preprocessing conventions.  Confirmed blocked as of 2026-09-17
+#   (401 gated-repo error) — held out of the current baseline batch.
+#
+# Sanskrit (san_Deva) is not in IndicTrans2's supported language list, so
+# source text is tagged as Hindi (hin_Deva) here, mirroring the mBART-50
+# workaround (docs/ASSUMPTIONS.md) — src_lang == tgt_lang == hin_Deva.
+model_family: indictrans2
+base_model: ai4bharat/indictrans2-indic-indic-1B
+model_revision: null
+
+src_lang: hin_Deva     # Sanskrit-as-Hindi source (see caveat above)
+tgt_lang: hin_Deva
+
+max_input_length: 256
+max_target_length: 256
+force_bos_target_lang: false   # IndicTrans2 uses plain-text language tags, not a forced BOS id
+
+label: "IndicTrans2-indic-indic-1B"

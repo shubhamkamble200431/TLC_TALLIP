@@ -1,0 +1,41 @@
+# Bucket-cap x repetition INFERENCE ablation (reviewer request).
+#
+# Reviewer's concern: the "sampled" test set (test_7264_5, ~1452/bucket nominal)
+# still has B1+B2 ~= 81% of the data -> the aggregate score is dominated by
+# short sentences and B5's influence is hidden.
+#
+# This ablation builds a bucket-EQUAL test set and sweeps how many sentences
+# per bucket (columns) and how many times each is repeated (rows), so you can
+# read off how much B5 actually moves the aggregate score, with all buckets
+# treated identically (fair comparison).
+#
+#   pool     = the UNSAMPLED test set (data/<ds>/test.sa) of v2 (and v1).
+#   M        = min over buckets of the pool bucket count.
+#              v2 -> B5 = 178 ;  v1 -> B5 = 56.
+#   columns  = k sentences per bucket, k = round(f * M) for f in `fractions`.
+#              nested: f=0.2 subset f=0.4 subset ... subset f=1.0
+#   rows     = `repetitions`  (each bucket's k sentences repeated r times;
+#              applied to ALL buckets, even B1-B4 that have spare data).
+#   cell     = metric over the 5-bucket-equal set (5*k*r sentences).
+#
+# INFERENCE ONLY, over the single best model after training.
+
+experiment: bucket_repeat
+model_key: nllb
+
+fractions:   [0.2, 0.4, 0.6, 0.8, 1.0]     # of M  -> columns
+repetitions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]   # rows
+
+repeat_mode: duplicate     # duplicate = k sentences x r copies (corpus metrics r-invariant -> shows fairness)
+                           # resample  = r independent deterministic draws of k per bucket (shows sampling noise)
+sample_seed: 42
+num_beams: 4
+metrics: [bleu, chrf2, comet]     # heatmap per metric; length_error + per-bucket also recorded
+
+pool_variant: unsampled            # data/<ds>/test.sa
+datasets: [v2, v1]                 # v1 only after v2's models are done
+
+heatmap:
+  colormap: viridis
+  dpi: 300
+  formats: [png, pdf]

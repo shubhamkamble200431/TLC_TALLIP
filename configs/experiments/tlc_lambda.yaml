@@ -1,0 +1,47 @@
+# TLC length-loss lambda sensitivity (brief sections 19-21, 29-E/F, 37-P9).
+#
+# Determines whether lambda = 0.1 is justified.  VALIDATION-ONLY selection
+# (brief: "Never tune lambda on the test set").
+
+experiment: tlc_ablation
+run_group: tlc_ablation
+dataset_version: v2
+model_key: nllb
+
+# Base config: TLC token ON, length loss ON, no BBS/RoPE/ALiBi (isolates lambda).
+base_config: X-0100
+seeds: [42]                       # add 43, 44 if compute permits
+robustness_seeds: [42, 43, 44]
+
+lambda_grid: [0.0, 0.01, 0.05, 0.1, 0.2, 0.5]
+
+# TLC token / loss decomposition (section 19): the pipeline supports all four
+# combinations; this sub-grid is optional and off by default.
+decomposition:
+  enabled: false
+  variants:
+    - {use_length_control_token: false, use_length_loss: false}   # neither (== X-0000)
+    - {use_length_control_token: true,  use_length_loss: false}   # token only
+    - {use_length_control_token: false, use_length_loss: true}    # loss only
+    - {use_length_control_token: true,  use_length_loss: true}    # both (== X-0100)
+
+selection:
+  primary_metric: val_comet
+  secondary: [val_bleu, val_chrf2, val_length_error, val_b5_bleu]
+
+defaults:
+  num_train_epochs: 8
+  per_device_train_batch_size: 16
+  gradient_accumulation_steps: 2
+  learning_rate: 5.0e-5
+  warmup_steps: 300
+  lr_scheduler_type: cosine
+  fp16: true
+  bucket_boundaries: [5, 10, 15, 20]
+  length_loss_epsilon: 1.0
+  comet_eval_every: 1
+  eval_strategy: epoch
+  save_strategy: "no"
+  load_best_model_at_end: false
+  metric_for_best_model: eval_bleu
+  greater_is_better: true

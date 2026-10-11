@@ -1,0 +1,79 @@
+# BBS weight-selection experiment — mBART-50-M2M variant (brief sections 6-11).
+#
+# Mirrors configs/experiments/bbs_search.yaml exactly, except model_key +
+# run_group, so it writes to its OWN folder (experiments/v2/bbs_search_mbart/)
+# instead of overwriting the NLLB search's selected_bbs_weights.json.
+# scripts/run_factorial.py --experiment mbart50 --bbs-weights selected reads
+# THIS file's output (see _BBS_SEARCH_DIR in run_factorial.py).
+
+experiment: bbs_search_mbart
+run_group: bbs_search_mbart
+dataset_version: v2
+model_key: mbart50_many_to_many
+
+# Config the search trains while varying the weight vector.
+# Use the BBS-ONLY config (the "X-A" cell) so the ranking isolates the BBS
+# effect with no TLC / RoPE / ALiBi confound.
+downstream_config: X-1000        # A=BBS only  (B=TLC=0, C=RoPE=0, D=ALiBi=0)
+
+# Search seeds.  Initial search is single-seed for tractability; the SELECTED
+# vector is afterwards re-run on all three seeds for the stability check.
+bbs_search_seeds: [42]
+robustness_seeds: [42, 43, 44]
+
+grid:
+  values: [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+  normalize_mean: true          # enforce sum(w) = 5
+  monotonic: true               # w1 <= w2 <= w3 <= w4 <= w5 (increasing emphasis on longer)
+  mode: grid2d                  # 'grid2d' (2D w4 x w5 sweep, fills the heatmap) |
+                                # 'coordinate' (one weight at a time) |
+                                # 'exhaustive' (cartesian product; SMALL value list only)
+  anchor: [1.0, 1.0, 1.0, 1.0, 1.0]
+  coordinate_axes: [3, 4]       # 0-indexed buckets to sweep (w4, w5) -> heatmap rows/cols
+  max_candidates: 40            # hard cap so the search stays "computationally manageable"
+                                # (grid2d + monotonic on the default value list -> ~15)
+  always_include:               # reference vectors always evaluated
+    uniform:         [1.0, 1.0, 1.0, 1.0, 1.0]
+    manual:          [1.0, 1.0, 1.2, 1.5, 2.0]
+
+# Selection is on VALIDATION performance only (brief section 8).
+selection:
+  primary_metric: val_comet     # val_comet | val_bleu | val_chrf2 | val_length_error
+  # secondary metrics reported but not used for selection:
+  secondary: [val_bleu, val_chrf2, val_length_error]
+
+# Training budget for each candidate (a cheap PROXY to RANK vectors, not the
+# final model).  By default the search uses the FULL data/v2/train (58,106) so
+# the WeightedRandomSampler sees the true bucket distribution.
+defaults:
+  num_train_epochs: 6
+  stratified_train_subsample: true
+  per_device_train_batch_size: 16
+  gradient_accumulation_steps: 2
+  learning_rate: 5.0e-5
+  warmup_steps: 300
+  lr_scheduler_type: cosine
+  fp16: true
+  bucket_boundaries: [5, 10, 15, 20]
+  bbs_deterministic: true
+  comet_eval_every: 1
+  eval_strategy: epoch
+  save_strategy: "no"           # search runs keep no checkpoints
+  load_best_model_at_end: false
+  metric_for_best_model: eval_bleu
+  greater_is_better: true
+
+# Manual-vs-selected comparison (section 10 analog, mBART): after selection,
+# train downstream_config (and X-1101) with BBS-manual and BBS-grid-selected
+# under all three seeds, full budget.
+compare:
+  configs: [X-1100, X-1101]
+  seeds: [42, 43, 44]
+  variants: [manual, grid_selected]
+  full_budget_from: mbart50     # reuse mbart50.yaml defaults for these runs
+
+heatmap:
+  colormap: viridis
+  annotate: true
+  dpi: 300
+  metrics: [val_comet, val_bleu, val_length_error]

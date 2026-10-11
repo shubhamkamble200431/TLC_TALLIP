@@ -1,0 +1,182 @@
+{
+  "san-guj": {
+    "pair_dir": "data/indic_data/san-guj",
+    "tgt_code": "gu",
+    "source_files": {
+      "sa": "data/indic_data/san-guj/NLLB.gu-sa.sa",
+      "tgt": "data/indic_data/san-guj/NLLB.gu-sa.gu"
+    },
+    "source_fingerprint": {
+      "sa": "bf0fd8dc8dad33e72aaec7e59b22e8dcdafcf5a99fdd2271c8feb187a1ea615b",
+      "tgt": "1aa5fa6baa7213f14db95f76620204ff0286e0d8d867ca39d28816dd45e73725"
+    },
+    "n_raw": 276708,
+    "n_unique_src": 120720,
+    "duplicate_rows_dropped": 155988,
+    "blank_sa_lines_raw": 0,
+    "seed": 42,
+    "fractions": {
+      "train": 0.8,
+      "val": 0.1,
+      "test": 0.1
+    },
+    "splits": {
+      "train": {
+        "n": 96576,
+        "bucket_counts": {
+          "B1": 45414,
+          "B2": 40940,
+          "B3": 7115,
+          "B4": 2064,
+          "B5": 1043
+        }
+      },
+      "val": {
+        "n": 12072,
+        "bucket_counts": {
+          "B1": 5680,
+          "B2": 5067,
+          "B3": 912,
+          "B4": 256,
+          "B5": 157
+        }
+      },
+      "test": {
+        "n": 12072,
+        "bucket_counts": {
+          "B1": 5703,
+          "B2": 5134,
+          "B3": 846,
+          "B4": 274,
+          "B5": 115
+        }
+      }
+    },
+    "note": "de-duplicated by exact Sanskrit source line (first occurrence kept) BEFORE splitting -- train/val/test share ZERO source lines by construction.",
+    "cross_split_overlap": {
+      "train_test": 0,
+      "train_val": 0,
+      "val_test": 0
+    }
+  },
+  "san-mar": {
+    "pair_dir": "data/indic_data/san-mar",
+    "tgt_code": "mr",
+    "source_files": {
+      "sa": "data/indic_data/san-mar/NLLB.mr-sa.sa",
+      "tgt": "data/indic_data/san-mar/NLLB.mr-sa.mr"
+    },
+    "source_fingerprint": {
+      "sa": "f28db3db31697ceb56a518807822ac0a5841b3bb906317eb6fa7a24cb5e576d5",
+      "tgt": "1e886713a414c66402600be0cf4c4c5f3f692bd7c074cd504079ab029085d670"
+    },
+    "n_raw": 297972,
+    "n_unique_src": 227218,
+    "duplicate_rows_dropped": 70754,
+    "blank_sa_lines_raw": 0,
+    "seed": 42,
+    "fractions": {
+      "train": 0.8,
+      "val": 0.1,
+      "test": 0.1
+    },
+    "splits": {
+      "train": {
+        "n": 181774,
+        "bucket_counts": {
+          "B1": 101407,
+          "B2": 68121,
+          "B3": 8692,
+          "B4": 2373,
+          "B5": 1181
+        }
+      },
+      "val": {
+        "n": 22722,
+        "bucket_counts": {
+          "B1": 12667,
+          "B2": 8501,
+          "B3": 1101,
+          "B4": 315,
+          "B5": 138
+        }
+      },
+      "test": {
+        "n": 22722,
+        "bucket_counts": {
+          "B1": 12660,
+          "B2": 8535,
+          "B3": 1096,
+          "B4": 283,
+          "B5": 148
+        }
+      }
+    },
+    "note": "de-duplicated by exact Sanskrit source line (first occurrence kept) BEFORE splitting -- train/val/test share ZERO source lines by construction.",
+    "cross_split_overlap": {
+      "train_test": 0,
+      "train_val": 0,
+      "val_test": 0
+    }
+  },
+  "san-or": {
+    "pair_dir": "data/indic_data/san-or",
+    "tgt_code": "or",
+    "source_files": {
+      "sa": "data/indic_data/san-or/NLLB.or-sa.sa",
+      "tgt": "data/indic_data/san-or/NLLB.or-sa.or"
+    },
+    "source_fingerprint": {
+      "sa": "9798ca6a34fdaf4304d60b8bad24e306affc8d64a964ab9a94d92cf2ac795315",
+      "tgt": "439c8970d8810944af5b44c420127406ef8307ff4328fae4e7efc10ac00e2c66"
+    },
+    "n_raw": 202789,
+    "n_unique_src": 162808,
+    "duplicate_rows_dropped": 39981,
+    "blank_sa_lines_raw": 0,
+    "seed": 42,
+    "fractions": {
+      "train": 0.8,
+      "val": 0.1,
+      "test": 0.1
+    },
+    "splits": {
+      "train": {
+        "n": 130246,
+        "bucket_counts": {
+          "B1": 67382,
+          "B2": 50227,
+          "B3": 8743,
+          "B4": 2586,
+          "B5": 1308
+        }
+      },
+      "val": {
+        "n": 16281,
+        "bucket_counts": {
+          "B1": 8383,
+          "B2": 6309,
+          "B3": 1090,
+          "B4": 343,
+          "B5": 156
+        }
+      },
+      "test": {
+        "n": 16281,
+        "bucket_counts": {
+          "B1": 8460,
+          "B2": 6186,
+          "B3": 1133,
+          "B4": 349,
+          "B5": 153
+        }
+      }
+    },
+    "note": "de-duplicated by exact Sanskrit source line (first occurrence kept) BEFORE splitting -- train/val/test share ZERO source lines by construction.",
+    "cross_split_overlap": {
+      "train_test": 0,
+      "train_val": 0,
+      "val_test": 0
+    }
+  }
+}

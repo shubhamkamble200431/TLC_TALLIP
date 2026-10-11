@@ -1,0 +1,95 @@
+dataset_version: v2
+src_lang: san_Deva
+tgt_lang: hin_Deva
+fingerprint: a599bac5412a32b814ce5332151fc122ab0e51634aa6350e44b54e3496bb9725
+bucket_boundaries:
+- 5
+- 10
+- 15
+- 20
+preprocessing:
+  version: as-pasted
+  augmentation: none
+  transliteration: none
+  notes: corpus used verbatim from data/v2/; no synthetic data
+tokenizer: facebook/nllb-200-distilled-600M + facebook/mbart-large-50-many-to-many-mmt
+paths:
+  data_dir: /raid/kahuja/TLC_TALLIP/data/v2
+  train_src: train.sa
+  train_tgt: train.hi
+  val_src: val.sa
+  val_tgt: val.hi
+  test_src: test.sa
+  test_tgt: test.hi
+test_variants:
+  unsampled:
+    src: test.sa
+    tgt: test.hi
+statistics:
+  n_train: 58106
+  n_val: 7263
+  n_test: 7264
+  n_test_variants:
+    unsampled: 7264
+  per_split:
+    train:
+      src_file: train.sa
+      tgt_file: train.hi
+      n_examples: 58106
+      n_src_lines: 58106
+      n_tgt_lines: 58106
+      aligned: true
+      src_sha256: 5d6c2deb53e397ec47a9ee51ebe5a50d3b70a7d2ffdce39b40e34d7ba9dea183
+      tgt_sha256: 3123675f6afea60d81589df6bdd57d0e91fe419ed797f7799a7a4d1399c67e76
+      source_bucket_counts:
+        1: 33033
+        2: 13803
+        3: 7036
+        4: 2582
+        5: 1652
+    val:
+      src_file: val.sa
+      tgt_file: val.hi
+      n_examples: 7263
+      n_src_lines: 7263
+      n_tgt_lines: 7263
+      aligned: true
+      src_sha256: a90f280781a632c6057841dc5dc05ad12430586016de6fd2fd19fdc955d1c406
+      tgt_sha256: c45eda3e1e9fa4adf6ef51cdbd3a9983346e54b9abcd2ac59b33502f21ecfa91
+      source_bucket_counts:
+        1: 4189
+        2: 1710
+        3: 832
+        4: 335
+        5: 197
+    test:
+      src_file: test.sa
+      tgt_file: test.hi
+      n_examples: 7264
+      n_src_lines: 7264
+      n_tgt_lines: 7264
+      aligned: true
+      src_sha256: c9e27d86a82b5ef8ec80df33283fdbf8cf9fe13872841218e75459d9e10f084e
+      tgt_sha256: 9600314ab9b0341dfcbe742440093cd2df483a6c93a9d7348b49b4fdba0372f3
+      source_bucket_counts:
+        1: 4157
+        2: 1743
+        3: 871
+        4: 315
+        5: 178
+    test_unsampled:
+      src_file: test.sa
+      tgt_file: test.hi
+      n_examples: 7264
+      n_src_lines: 7264
+      n_tgt_lines: 7264
+      aligned: true
+      src_sha256: c9e27d86a82b5ef8ec80df33283fdbf8cf9fe13872841218e75459d9e10f084e
+      tgt_sha256: 9600314ab9b0341dfcbe742440093cd2df483a6c93a9d7348b49b4fdba0372f3
+      source_bucket_counts:
+        1: 4157
+        2: 1743
+        3: 871
+        4: 315
+        5: 178
+role: main factorial + mBART baseline + BBS/TLC search

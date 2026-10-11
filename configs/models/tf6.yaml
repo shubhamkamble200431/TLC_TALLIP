@@ -1,0 +1,24 @@
+# "tf6" baseline — a vanilla Transformer encoder-decoder (BART architecture)
+# trained FROM SCRATCH (random init, no pretrained checkpoint), 6 encoder +
+# 6 decoder layers.  base_model is a marker string (infer_model_family()
+# matches on "scratch-tf6"), not a real HF repo; the tokenizer is borrowed
+# from tokenizer_base (NLLB) purely for subword segmentation — see
+# src/models/builder.py::_build_scratch_transformer.
+model_family: tf6
+base_model: scratch-tf6
+model_revision: null
+tokenizer_base: facebook/nllb-200-distilled-600M
+
+scratch_layers: 6
+scratch_d_model: 512
+scratch_ffn_dim: 2048
+scratch_attention_heads: 8
+
+src_lang: san_Deva
+tgt_lang: hin_Deva
+
+max_input_length: 512
+max_target_length: 128
+force_bos_target_lang: false   # decoder_start_token_id is set explicitly at construction
+
+label: "Transformer-6L-scratch"

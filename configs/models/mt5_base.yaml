@@ -1,0 +1,18 @@
+# mT5-base baseline (extra architecture, not part of the X-ABCD factorial).
+# T5-family: no per-language forced-BOS / src_lang-tokenizer convention, so we
+# fine-tune it as a plain text-to-text pair (source in, target out; no task
+# prefix — this is a full fine-tune, not a prompted/few-shot use of mT5).
+model_family: mt5
+base_model: google/mt5-base
+model_revision: null
+
+src_lang: san_Deva
+tgt_lang: hin_Deva
+
+max_input_length: 512
+max_target_length: 128
+
+force_bos_target_lang: false   # mT5 has no per-language forced BOS; decoder_start_token_id
+                                # (= pad_token_id) comes from the pretrained config as-is.
+
+label: "mT5-base"

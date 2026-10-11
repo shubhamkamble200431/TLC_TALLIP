@@ -1,0 +1,95 @@
+dataset_version: v1
+src_lang: san_Deva
+tgt_lang: hin_Deva
+fingerprint: 2c366c80d3fb055016fad48e91ff5d693e71a5cd9930222ae1e7b7c441b0adcc
+bucket_boundaries:
+- 5
+- 10
+- 15
+- 20
+preprocessing:
+  version: as-pasted
+  augmentation: none
+  transliteration: none
+  notes: corpus used verbatim from data/v1/; no synthetic data
+tokenizer: facebook/nllb-200-distilled-600M + facebook/mbart-large-50-many-to-many-mmt
+paths:
+  data_dir: /raid/kahuja/TLC_TALLIP/data/v1
+  train_src: train.sa
+  train_tgt: train.hi
+  val_src: val.sa
+  val_tgt: val.hi
+  test_src: test.sa
+  test_tgt: test.hi
+test_variants:
+  unsampled:
+    src: test.sa
+    tgt: test.hi
+statistics:
+  n_train: 43290
+  n_val: 5410
+  n_test: 5414
+  n_test_variants:
+    unsampled: 5414
+  per_split:
+    train:
+      src_file: train.sa
+      tgt_file: train.hi
+      n_examples: 43290
+      n_src_lines: 43290
+      n_tgt_lines: 43290
+      aligned: true
+      src_sha256: 3d375bdad4faa59853ef3c417f7ad27b325af99794b75be98e0b0576db17462c
+      tgt_sha256: 7ea765254a5b3972fc16de30f8b8f2414d70a1fa7d08b3496398f209ebcd4bab
+      source_bucket_counts:
+        1: 31754
+        2: 7582
+        3: 2800
+        4: 750
+        5: 404
+    val:
+      src_file: val.sa
+      tgt_file: val.hi
+      n_examples: 5410
+      n_src_lines: 5410
+      n_tgt_lines: 5410
+      aligned: true
+      src_sha256: 4009401dc3460dc12be283f417995f958187bcdda30846f859bd7a4802a1b4cf
+      tgt_sha256: 2399ce6a3c336354620a183b210e9ee9c007a1e43ab088fa76d91ec9df019fa6
+      source_bucket_counts:
+        1: 3972
+        2: 940
+        3: 354
+        4: 96
+        5: 48
+    test:
+      src_file: test.sa
+      tgt_file: test.hi
+      n_examples: 5414
+      n_src_lines: 5414
+      n_tgt_lines: 5414
+      aligned: true
+      src_sha256: 47beff3d7d8ce362896425a5f4e69e6a30c5f181180cf1076f79b6cc5201cdbe
+      tgt_sha256: 9667e6b30279dfc35a02c88da2b4a1c81b649cc3454dbcf652dba1e0c6cdf2b5
+      source_bucket_counts:
+        1: 3945
+        2: 975
+        3: 345
+        4: 93
+        5: 56
+    test_unsampled:
+      src_file: test.sa
+      tgt_file: test.hi
+      n_examples: 5414
+      n_src_lines: 5414
+      n_tgt_lines: 5414
+      aligned: true
+      src_sha256: 47beff3d7d8ce362896425a5f4e69e6a30c5f181180cf1076f79b6cc5201cdbe
+      tgt_sha256: 9667e6b30279dfc35a02c88da2b4a1c81b649cc3454dbcf652dba1e0c6cdf2b5
+      source_bucket_counts:
+        1: 3945
+        2: 975
+        3: 345
+        4: 93
+        5: 56
+role: V1+a*V2 data-scale ablation only

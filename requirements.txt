@@ -1,0 +1,31 @@
+# TLC_TALLIP — Sanskrit -> Hindi length-aware NMT (NLLB + mBART-50 only)
+# Verified working set: conda env `emnlp` on the DGX (Python 3.10, CUDA 12.4).
+
+# ── core training stack ──────────────────────────────────────────────────────
+torch>=2.4,<2.8                 # tested: 2.6.0+cu124
+transformers>=4.50,<4.60       # tested: 4.57.6
+accelerate>=0.28
+sentencepiece>=0.1.99
+protobuf>=3.20
+safetensors>=0.4
+pyyaml>=6.0
+
+# ── evaluation metrics ──────────────────────────────────────────────────────
+sacrebleu>=2.3                 # BLEU (flores200), chrF2, TER
+unbabel-comet>=2.2            # COMET wmt22-comet-da
+bert-score>=0.3.12
+nltk>=3.8                      # METEOR (needs wordnet/omw-1.4, auto-downloaded)
+sacremoses>=0.1
+
+# ── numerics / stats / plotting ────────────────────────────────────────────
+numpy>=1.24,<2.0
+pandas>=2.0
+scipy>=1.10                    # t-distribution CIs, factorial p-values
+matplotlib>=3.7
+
+# ── testing ────────────────────────────────────────────────────────────────
+pytest>=7.0
+
+# NOTE: statsmodels / seaborn are NOT required — the factorial OLS is
+# implemented directly in numpy (src/statistics/factorial.py) and all figures
+# use pure matplotlib.

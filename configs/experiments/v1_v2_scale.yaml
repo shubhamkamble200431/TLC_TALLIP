@@ -1,0 +1,65 @@
+# V1 + alpha*V2 data-scale ablation (repetitions x v2_fraction heatmap).
+#
+# ANALYSIS ONLY — never used to pick the final model or any hyper-parameter.
+# Checkpoint selection stays on validation.
+#
+#   V1  = data/v1/train.*   (older/shorter corpus)      -- FIXED every cell
+#   V2  = data/v2/train.*   (the main corpus)           -- added a fraction alpha of
+#   V1 + alpha*V2  = V1  ++  nested_prefix(shuffle(V2_train, subset_seed))[:alpha*|V2_train|]
+#   repetitions    = integer replication of the composed list (train_repeat_factor)
+#
+# The held-out eval set is the SAME as every headline experiment:
+# V2 val + V2 test_7264_5  (resolved via dataset_version: v2).
+
+experiment: v1_v2_scale
+run_group: v1_v2_scale
+dataset_version: v2               # -> val/test come from configs/datasets/v2.yaml
+model_key: nllb
+
+# downstream config trained in every cell.  X-0000 = plain fine-tune (the point
+# is to isolate the effect of ADDING DATA, not of the interventions).
+downstream_config: X-0000
+
+seed: 42                          # experiment seed; drives the V2 subset order + training
+
+grid:
+  v2_fractions: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  repetitions:  [1, 2, 3]
+
+# where the two corpora live
+v1_dir: data/v1
+v2_dir: data/v2
+
+evaluation:
+  eval_corpora: [v2]                # eval on v2 first; v1 done later, after v2 finishes for nllb+mbart
+  test_variants: [unsampled]        # reviewer: skip the bucket-balanced "sampled" set; use raw test.sa
+  splits: [test]
+  num_beams: 4
+  metrics: [bleu, chrf2, comet]   # heatmaps required for these three (+ length_error recorded)
+
+# training budget per cell (modest — this is an analysis sweep, not the
+# headline 20-epoch runs)
+defaults:
+  num_train_epochs: 10
+  per_device_train_batch_size: 16
+  gradient_accumulation_steps: 2
+  learning_rate: 5.0e-5
+  warmup_steps: 500
+  lr_scheduler_type: cosine
+  fp16: true
+  bucket_boundaries: [5, 10, 15, 20]
+  eval_strategy: epoch
+  save_strategy: epoch
+  eval_every_n_epochs: 5        # validate + checkpoint every 5 epochs, not every epoch
+  save_total_limit: 1
+  load_best_model_at_end: true
+  metric_for_best_model: eval_bleu
+  greater_is_better: true
+  comet_eval_every: 5
+  final_eval_num_beams: 4
+  deterministic: true
+
+heatmap:
+  colormap: viridis
+  dpi: 300
+  formats: [png, pdf, svg]

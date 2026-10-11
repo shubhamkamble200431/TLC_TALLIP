@@ -1,0 +1,57 @@
+# mBART-50 many-to-many — FULL 2^4 factorial (brief sections 5, 22, 29-B, 37-P2).
+#
+# Same 16 X-ABCD configs x 3 seeds = 48 runs as the NLLB factorial, on data/v2.
+# Purpose: check that the dataset-level findings (BBS / TLC / RoPE / ALiBi main
+# effects and interactions) GENERALISE across a second encoder-decoder
+# architecture, not just NLLB-200-distilled-600M.
+#
+# Same dataset split, preprocessing policy, BBS weight vector, evaluation test
+# set (raw v2/test.sa -- "unsampled"), metrics and decoding policy as the NLLB
+# factorial.  Architecture-forced differences (language codes, max_input_length)
+# live in configs/models/mbart50_many_to_many.yaml and docs/ASSUMPTIONS.md.
+#
+# Launch:  python scripts/run_factorial.py --experiment mbart50 --run-all --dataset v2
+#     or:  python scripts/run_mbart50.py --run-all           (thin alias)
+
+experiment: mbart50
+run_group: mbart50
+dataset_version: v2
+model_key: mbart50_many_to_many
+
+seeds: [42, 43, 44]
+configs: all                 # all 16 X-ABCD cases (was ["X-0000"] — baseline only)
+
+defaults:
+  num_train_epochs: 20
+  per_device_train_batch_size: 32          # probe start; halves on OOM per model (see _autoscale_micro_batch)
+  auto_find_batch_size: true               # 32 -> 16 -> 8 ... until it fits
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 2
+  learning_rate: 5.0e-5
+  weight_decay: 0.01
+  warmup_steps: 500
+  lr_scheduler_type: cosine
+  label_smoothing: 0.1
+  fp16: true
+  dataloader_num_workers: 0   # was 2; multiprocessing workers hung the run on a transient /tmp disk-quota EDQUOT (2026-09-15)
+  optimizer: adamw_torch
+  bucket_boundaries: [5, 10, 15, 20]
+  eval_strategy: epoch
+  save_strategy: epoch
+  eval_every_n_epochs: 5        # validate + checkpoint every 5 epochs, not every epoch
+  save_total_limit: 2
+  load_best_model_at_end: true
+  metric_for_best_model: eval_bleu
+  greater_is_better: true
+  comet_eval_every: 5
+  train_eval_num_beams: 1
+  final_eval_num_beams: 4
+  deterministic: true
+
+evaluation:
+  eval_corpora: [v2]                # eval on v2 first; v1 done later, after v2 finishes for nllb+mbart
+  test_variants: [unsampled]        # reviewer: skip the bucket-balanced "sampled" set; use raw test.sa
+  splits: [test]
+  num_beams: 4
+  metrics: [bleu, chrf2, ter, meteor, bertscore, comet]
+  bucket_boundaries: [5, 10, 15, 20]

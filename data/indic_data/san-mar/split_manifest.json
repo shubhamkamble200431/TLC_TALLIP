@@ -1,0 +1,60 @@
+{
+  "pair_dir": "data/indic_data/san-mar",
+  "tgt_code": "mr",
+  "source_files": {
+    "sa": "data/indic_data/san-mar/NLLB.mr-sa.sa",
+    "tgt": "data/indic_data/san-mar/NLLB.mr-sa.mr"
+  },
+  "source_fingerprint": {
+    "sa": "f28db3db31697ceb56a518807822ac0a5841b3bb906317eb6fa7a24cb5e576d5",
+    "tgt": "1e886713a414c66402600be0cf4c4c5f3f692bd7c074cd504079ab029085d670"
+  },
+  "n_raw": 297972,
+  "n_unique_src": 227218,
+  "duplicate_rows_dropped": 70754,
+  "blank_sa_lines_raw": 0,
+  "seed": 42,
+  "fractions": {
+    "train": 0.8,
+    "val": 0.1,
+    "test": 0.1
+  },
+  "splits": {
+    "train": {
+      "n": 181774,
+      "bucket_counts": {
+        "B1": 101407,
+        "B2": 68121,
+        "B3": 8692,
+        "B4": 2373,
+        "B5": 1181
+      }
+    },
+    "val": {
+      "n": 22722,
+      "bucket_counts": {
+        "B1": 12667,
+        "B2": 8501,
+        "B3": 1101,
+        "B4": 315,
+        "B5": 138
+      }
+    },
+    "test": {
+      "n": 22722,
+      "bucket_counts": {
+        "B1": 12660,
+        "B2": 8535,
+        "B3": 1096,
+        "B4": 283,
+        "B5": 148
+      }
+    }
+  },
+  "note": "de-duplicated by exact Sanskrit source line (first occurrence kept) BEFORE splitting -- train/val/test share ZERO source lines by construction.",
+  "cross_split_overlap": {
+    "train_test": 0,
+    "train_val": 0,
+    "val_test": 0
+  }
+}

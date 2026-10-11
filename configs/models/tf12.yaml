@@ -1,0 +1,19 @@
+# "tf12" baseline — same as tf6.yaml but 12 encoder + 12 decoder layers.
+model_family: tf12
+base_model: scratch-tf12
+model_revision: null
+tokenizer_base: facebook/nllb-200-distilled-600M
+
+scratch_layers: 12
+scratch_d_model: 512
+scratch_ffn_dim: 2048
+scratch_attention_heads: 8
+
+src_lang: san_Deva
+tgt_lang: hin_Deva
+
+max_input_length: 512
+max_target_length: 128
+force_bos_target_lang: false
+
+label: "Transformer-12L-scratch"

@@ -1,0 +1,31 @@
+# mBART-50 many-to-many baseline (brief section 5: "mBART-50-M2M").
+#
+# Multilingual many-to-many checkpoint (NOT a one-direction one-to-many model):
+#   facebook/mbart-large-50-many-to-many-mmt
+#
+# LANGUAGE CODE CAVEAT (documented assumption — see docs/ASSUMPTIONS.md):
+#   mBART-50 has NO Sanskrit language code.  The closest available code that
+#   shares the Devanagari script and lexical overlap is Hindi (hi_IN); Marathi
+#   (mr_IN) is the documented alternative.  We therefore feed Sanskrit source
+#   text under `mbart_src_lang` and translate into Hindi (`mbart_tgt_lang`).
+#   This is a real limitation of mBART-50 for this pair and is reported as
+#   such; it does NOT affect the NLLB factorial (which uses native san_Deva).
+model_family: mbart
+base_model: facebook/mbart-large-50-many-to-many-mmt
+model_revision: null
+
+# Canonical NLLB codes kept for internal bucketing / metric code.
+src_lang: san_Deva
+tgt_lang: hin_Deva
+
+# mBART-50 tokenizer / generation language configuration (explicitly set —
+# brief: "Do not assume the model's default language configuration is correct").
+mbart_src_lang: hi_IN        # Sanskrit-as-Hindi source (see caveat above)
+mbart_tgt_lang: hi_IN        # Hindi target
+force_bos_target_lang: true  # forced_bos_token_id = tokenizer.lang_code_to_id["hi_IN"]
+
+# Same policy as the NLLB runs unless the architecture requires otherwise.
+max_input_length: 200        # mBART-50 positional limit is 1024; 200 covers B5 easily
+max_target_length: 128
+
+label: "mBART-50-M2M"

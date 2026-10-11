@@ -1,0 +1,18 @@
+# NLLB-200 distilled 600M — primary backbone for the X-ABCD factorial.
+# Sanskrit -> Hindi, both Devanagari; NLLB has native codes for both.
+model_family: nllb
+base_model: facebook/nllb-200-distilled-600M
+model_revision: null
+
+# NLLB language codes (canonical internal representation used everywhere).
+src_lang: san_Deva
+tgt_lang: hin_Deva
+
+max_input_length: 512
+max_target_length: 128
+
+# NLLB forces the target-language code as the decoder BOS; the evaluator
+# resolves tokenizer.convert_tokens_to_ids(tgt_lang) at generation time.
+force_bos_target_lang: true
+
+label: "NLLB-200-distilled-600M"
